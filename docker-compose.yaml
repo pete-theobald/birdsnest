@@ -1,0 +1,33 @@
+version: "2.2"
+
+networks:
+    external_access:
+        external:
+            name: frontend_ptheobald_co_uk
+    default:
+        enable_ipv6: true
+
+volumes:
+    restreamer:
+
+services:
+    stream-converter:
+        build:
+            context: ./stream-converter
+        networks:
+            external_access:
+            default:
+        volumes:
+            - restreamer:/restreamer/db
+        environment:
+            RS_USERNAME: admin
+            RS_PASSWORD: admin
+            RS_INPUTSTREAM: rtsp://192.168.6.2:7447/kGRPEG4gucPJ04m5
+            RS_AUDIO: silence
+            RS_SNAPSHOT_INTERVAL: 15s
+        labels:
+            - domain=ptheobald.co.uk
+            - traefik.http.routers.stream-converter.rule=Host(`birdsnest.ptheobald.co.uk`)
+            - traefik.http.services.stream-converter.loadbalancer.server.port=8080
+            - traefik.http.routers.stream-converter.entrypoints=websecure
+        restart: unless-stopped
