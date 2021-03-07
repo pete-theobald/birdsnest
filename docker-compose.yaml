@@ -1,0 +1,22 @@
+version: "2.2"
+
+networks:
+    external_access:
+        external:
+            name: frontend_ptheobald_co_uk
+    default:
+        enable_ipv6: true
+
+services:
+    stream-converter:
+        build:
+            context: ./stream-converter
+        networks:
+            external_access:
+            default:
+        labels:
+            - domain=ptheobald.co.uk
+            - traefik.http.routers.stream-converter.rule=Host(`birdsnest.ptheobald.co.uk`)
+            - traefik.http.services.stream-converter.loadbalancer.server.port=8080
+            - traefik.http.routers.stream-converter.entrypoints=websecure
+        restart: unless-stopped
