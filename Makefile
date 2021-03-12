@@ -8,4 +8,6 @@ deploy: build
 
 test: build
 	docker-compose run --rm test
-	
+
+restart: deploy
+	docker-compose restart

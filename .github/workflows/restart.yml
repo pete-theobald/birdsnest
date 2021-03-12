@@ -1,0 +1,18 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI-prod
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    build:
+        runs-on: self-hosted
+        steps:
+            -   uses: actions/checkout@v2
+
+            -   name: Deploy
+                run: make prod
+                env:
+                    DOCKER_HOST: tcp://docker.ptheobald.co.uk:2375
