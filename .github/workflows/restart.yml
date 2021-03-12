@@ -1,10 +1,8 @@
-# This is a basic workflow to help you get started with Actions
+name: Restart every 6 hours
 
-name: CI-prod
 on:
-    push:
-        branches:
-            - master
+    schedule:
+        -   cron: '30 4/6 * * *'
 
 jobs:
     build:
@@ -12,7 +10,7 @@ jobs:
         steps:
             -   uses: actions/checkout@v2
 
-            -   name: Deploy
-                run: make prod
+            -   name: Restart
+                run: make restart
                 env:
                     DOCKER_HOST: tcp://docker.ptheobald.co.uk:2375
